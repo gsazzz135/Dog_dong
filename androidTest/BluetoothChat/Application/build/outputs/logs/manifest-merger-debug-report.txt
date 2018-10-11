@@ -1,0 +1,115 @@
+-- Merging decision tree log ---
+manifest
+ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:18:1-53:12
+INJECTED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:18:1-53:12
+INJECTED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:18:1-53:12
+MERGED from [com.android.support:support-v4:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\support-v4-27.0.2.aar\0516280d2a29920b04764a1badfe87e7\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:gridlayout-v7:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\gridlayout-v7-27.0.2.aar\5daa2681744118c4f55f101029c5c4eb\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:cardview-v7:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\cardview-v7-27.0.2.aar\f740931fa8cbb5577f34f7c36abaa367\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:appcompat-v7:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.0.2.aar\97c16f77435736f1b3cef1c0798f11e1\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-media-compat:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\support-media-compat-27.0.2.aar\130221a56d4259a79600b1fbda1c2f47\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-fragment:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\support-fragment-27.0.2.aar\a3f49c92968441b9a4a25a54453b9482\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-utils:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.0.2.aar\51b42e2d37764202a6061f04ab1db017\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:animated-vector-drawable:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-27.0.2.aar\fb03f4e78bee13e93a16afc9d6c721e1\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-ui:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.0.2.aar\718d51afd4d770033b8ed7d9ccb0fae0\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-vector-drawable:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.0.2.aar\27a6fedcce89b8cc16a27d400514b4de\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-compat:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\support-compat-27.0.2.aar\b4d0c30b9e16991c68102ee4c40dc7a5\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:runtime:1.0.3] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\runtime-1.0.3.aar\ab05727024b8d533ccd43a411408078f\AndroidManifest.xml:17:1-24:12
+INJECTED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:18:1-53:12
+INJECTED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:18:1-53:12
+	package
+		ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:19:5-48
+	android:versionName
+		ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:22:5-30
+		INJECTED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml
+		INJECTED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:20:5-63
+	android:versionCode
+		ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:21:5-28
+		INJECTED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml
+		INJECTED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml
+uses-permission#android.permission.BLUETOOTH_ADMIN
+ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:26:5-73
+	android:name
+		ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:26:22-71
+uses-permission#android.permission.BLUETOOTH
+ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:27:5-67
+	android:name
+		ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:27:22-65
+application
+ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:29:5-51:19
+	android:label
+		ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:32:9-41
+	android:icon
+		ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:31:9-45
+	android:allowBackup
+		ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:30:9-35
+	android:theme
+		ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:33:9-40
+activity#com.example.android.bluetoothchat.MainActivity
+ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:35:9-43:20
+	android:label
+		ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:38:13-45
+	android:configChanges
+		ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:37:13-63
+	android:name
+		ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:36:13-41
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:39:13-42:29
+action#android.intent.action.MAIN
+ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:40:17-68
+	android:name
+		ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:40:25-66
+category#android.intent.category.LAUNCHER
+ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:41:17-76
+	android:name
+		ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:41:27-74
+activity#com.example.android.bluetoothchat.DeviceListActivity
+ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:45:9-49:63
+	android:label
+		ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:48:13-50
+	android:configChanges
+		ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:47:13-63
+	android:theme
+		ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:49:13-61
+	android:name
+		ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml:46:13-47
+uses-sdk
+INJECTED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml
+INJECTED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml
+MERGED from [com.android.support:support-v4:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\support-v4-27.0.2.aar\0516280d2a29920b04764a1badfe87e7\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v4:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\support-v4-27.0.2.aar\0516280d2a29920b04764a1badfe87e7\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:gridlayout-v7:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\gridlayout-v7-27.0.2.aar\5daa2681744118c4f55f101029c5c4eb\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:gridlayout-v7:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\gridlayout-v7-27.0.2.aar\5daa2681744118c4f55f101029c5c4eb\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:cardview-v7:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\cardview-v7-27.0.2.aar\f740931fa8cbb5577f34f7c36abaa367\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:cardview-v7:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\cardview-v7-27.0.2.aar\f740931fa8cbb5577f34f7c36abaa367\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:appcompat-v7:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.0.2.aar\97c16f77435736f1b3cef1c0798f11e1\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:appcompat-v7:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.0.2.aar\97c16f77435736f1b3cef1c0798f11e1\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-media-compat:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\support-media-compat-27.0.2.aar\130221a56d4259a79600b1fbda1c2f47\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-media-compat:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\support-media-compat-27.0.2.aar\130221a56d4259a79600b1fbda1c2f47\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\support-fragment-27.0.2.aar\a3f49c92968441b9a4a25a54453b9482\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\support-fragment-27.0.2.aar\a3f49c92968441b9a4a25a54453b9482\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.0.2.aar\51b42e2d37764202a6061f04ab1db017\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.0.2.aar\51b42e2d37764202a6061f04ab1db017\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-27.0.2.aar\fb03f4e78bee13e93a16afc9d6c721e1\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-27.0.2.aar\fb03f4e78bee13e93a16afc9d6c721e1\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.0.2.aar\718d51afd4d770033b8ed7d9ccb0fae0\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.0.2.aar\718d51afd4d770033b8ed7d9ccb0fae0\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.0.2.aar\27a6fedcce89b8cc16a27d400514b4de\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.0.2.aar\27a6fedcce89b8cc16a27d400514b4de\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\support-compat-27.0.2.aar\b4d0c30b9e16991c68102ee4c40dc7a5\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:27.0.2] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\support-compat-27.0.2.aar\b4d0c30b9e16991c68102ee4c40dc7a5\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.0.3] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\runtime-1.0.3.aar\ab05727024b8d533ccd43a411408078f\AndroidManifest.xml:20:5-22:41
+MERGED from [android.arch.lifecycle:runtime:1.0.3] C:\Users\gsa23\.gradle\caches\transforms-1\files-1.1\runtime-1.0.3.aar\ab05727024b8d533ccd43a411408078f\AndroidManifest.xml:20:5-22:41
+INJECTED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml
+INJECTED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml
+		ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml
+		INJECTED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml
+		ADDED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml
+		INJECTED from D:\DOGFRIENDS\BluetoothChat\Application\src\main\AndroidManifest.xml

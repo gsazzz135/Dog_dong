@@ -1,0 +1,4 @@
+#Sun Sep 30 17:11:31 KST 2018
+base.0=D\:\\DOGFRIENDS\\BluetoothChat\\Application\\build\\intermediates\\transforms\\dexMerger\\debug\\0
+path.0=classes.dex
+renamed.0=classes.dex
