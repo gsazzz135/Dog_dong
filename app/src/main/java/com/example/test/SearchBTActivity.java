@@ -37,10 +37,8 @@ public class SearchBTActivity extends Activity implements  AdapterView.OnItemCli
     //UI
     Button btnSearch;
     ListView listDevice;
-    ListView listPaired;
 
     List<String> dataDevice;
-    List<String> dataPaired;
 
     Set<BluetoothDevice> mDevices;
     List<BluetoothDevice> bluetoothDevices;
@@ -56,7 +54,7 @@ public class SearchBTActivity extends Activity implements  AdapterView.OnItemCli
         Toast.makeText(SearchBTActivity.this, address + "선택", Toast.LENGTH_SHORT).show();
         stopFindDevice();
     }
-    //-------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) { // savedInstanceState는 상태를 저장함 사용하여 값을 저장
         mayPermission();					// SDK 버전 맞춰줌
@@ -64,7 +62,6 @@ public class SearchBTActivity extends Activity implements  AdapterView.OnItemCli
         setContentView(R.layout.activity_search_bt);
         //UI
         btnSearch = (Button)findViewById(R.id.btnSearch);
-        listPaired = (ListView)findViewById(R.id.listPaired);
         listDevice = (ListView)findViewById(R.id.listDevice);
         bluetoothDevices = new ArrayList<>();
         selectDevice = -1;
@@ -84,19 +81,22 @@ public class SearchBTActivity extends Activity implements  AdapterView.OnItemCli
     //블루투스 설정
     protected void checkBluetooth(){
         mBluetoothAdapter =  BluetoothAdapter.getDefaultAdapter();
-        if(mBluetoothAdapter == null){
-            //장치가 블루투스를 지원하지 않는 경우
-            finish();
-        }else{
-            //장치가 블루투스를 지원하는 경우
-            if(!mBluetoothAdapter.isEnabled()){
-                //블루투스가 비활성 상태인 경우
-                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-            }else{
-                searchDevices();
-            }
+        if(mBluetoothAdapter.isEnabled()){
+            searchDevices();
         }
+//        if(mBluetoothAdapter == null){
+//            //장치가 블루투스를 지원하지 않는 경우
+//            finish();
+//        }else{
+//            //장치가 블루투스를 지원하는 경우
+//            if(!mBluetoothAdapter.isEnabled()){
+//                //블루투스가 비활성 상태인 경우
+//                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+//                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+//            }else{
+//                searchDevices();
+//            }
+//        }
     }
 
     //----------------------------------------------------------------------------------------------
@@ -127,13 +127,8 @@ public class SearchBTActivity extends Activity implements  AdapterView.OnItemCli
 
     //--------------------------------------------------------------------------------------------------
     protected void initListView(){
-        dataPaired = new ArrayList<>();
         dataDevice = new ArrayList<>();
         bluetoothDevices.clear();
-
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dataPaired);
-        listPaired.setAdapter(adapter1);
-        listPaired.setOnItemClickListener(this);
 
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dataDevice);
         listDevice.setAdapter(adapter2);
@@ -157,13 +152,10 @@ public class SearchBTActivity extends Activity implements  AdapterView.OnItemCli
     protected void addDeviceToList(String name, String address, boolean isPaired){
         String deviceInfo = name + "-" + address;
         ArrayAdapter adapter;
-        if(isPaired){
-            dataPaired.add(deviceInfo);
-            adapter = (ArrayAdapter)listPaired.getAdapter();
-        }else{
+        if(!isPaired){
             dataDevice.add(deviceInfo);
-            adapter = (ArrayAdapter)listDevice.getAdapter();
         }
+        adapter = (ArrayAdapter)listDevice.getAdapter();
         adapter.notifyDataSetChanged();
     }
 
@@ -206,6 +198,11 @@ public class SearchBTActivity extends Activity implements  AdapterView.OnItemCli
                         ArrayAdapter adapter = (ArrayAdapter)listDevice.getAdapter();
                         adapter.notifyDataSetChanged();
                         selectDevice = -1;
+
+                        startActivity(new Intent(SearchBTActivity.this, ConnectActivity.class));
+//                        Intent intentConnect = new Intent(SearchBTActivity.this, ConnectActivity.class);
+//                        startActivity(intentConnect);
+
                     }
                 }
             }
@@ -244,5 +241,3 @@ public class SearchBTActivity extends Activity implements  AdapterView.OnItemCli
         stopFindDevice();
     }
 }
-
-

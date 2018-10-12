@@ -13,44 +13,16 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
     //버튼 변수 선언
-    private Button button1;
-    private Button button2;
-    private Button button3;
+
     private Button button4;
     private Button button5;
+    private Button button6;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //자동모드 페이지 접속
-        button1 =  (Button)findViewById(R.id.button1);
-        button1.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v){
-                Intent intentAuto = new Intent(MainActivity.this, AutoFullscreenActivity.class);
-                startActivity(intentAuto);
-            }
-        });
-
-        //수동모드 페이지 접속
-        button2 =  (Button)findViewById(R.id.button2);
-        button2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v){
-                Intent intentManual = new Intent(MainActivity.this, ManualFullscreenActivity.class);
-                startActivity(intentManual);
-            }
-        });
-
-        //카메라모드 접속
-        button3 =  (Button)findViewById(R.id.button3);
-        button3.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v){
-                Intent intentCamera = new Intent(MainActivity.this, CameraFullscreenActivity.class);
-                startActivity(intentCamera);
-            }
-        });
 
         //로그인 웹페이지 열기(나중에 로그인 웹 하면 띄우고 그 안에서 회원가입페이지 띄울예정)
         button4 =  (Button)findViewById(R.id.button4);
@@ -67,6 +39,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v){
                 Intent intentConnect = new Intent(MainActivity.this, ConnectActivity.class);
                 startActivity(intentConnect);
+            }
+        });
+
+        // PLAY 연결하기 페이지
+        button6 =  (Button)findViewById(R.id.button6);
+        button6.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                Intent intentPlay = new Intent(MainActivity.this, PlayActivity.class);
+                startActivity(intentPlay);
             }
         });
 

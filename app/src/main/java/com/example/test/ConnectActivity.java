@@ -29,6 +29,7 @@ package com.example.test;
         import com.example.test.R.*;
 
 public class ConnectActivity extends AppCompatActivity implements View.OnClickListener {
+
     static final int REQUEST_ENABLE_BT = 10;
     int mPairedDeviceCount = 0;
     Set<BluetoothDevice> mDevices;
@@ -52,23 +53,24 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
     EditText mEditReceive, mEditSend;
     Button mButtonSend;
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        switch(requestCode) {
-            case REQUEST_ENABLE_BT:
-                if(resultCode == RESULT_OK) { // 블루투스 활성화 상태
-                    selectDevice();
-                }
-                else if(resultCode == RESULT_CANCELED) { // 블루투스 비활성화 상태 (종료)
-                    Toast.makeText(getApplicationContext(), "블루투수를 사용할 수 없어 프로그램을 종료합니다", Toast.LENGTH_LONG).show();
-                    finish();
-                }
-                break;
-        }
-        super.onActivityResult(requestCode, resultCode, data);
+    // 1
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(layout.activity_connect);
+
+
+        mEditReceive = (EditText)findViewById(id.receiveText);
+        mEditSend = (EditText)findViewById(id.sendText);
+
+        mButtonSend = (Button)findViewById(id.sendButton);
+        mButtonSend.setOnClickListener(this);
+
+        checkBluetooth();
     }
 
+    // 2
     void checkBluetooth() {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if(mBluetoothAdapter == null ) {  // 블루투스 미지원
@@ -88,6 +90,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    // 3
     void selectDevice() {
 
         mDevices = mBluetoothAdapter.getBondedDevices();
@@ -95,7 +98,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
 
         if(mPairedDeviceCount == 0 ) { // 페어링된 장치가 없는 경우.
             Toast.makeText(getApplicationContext(), "페어링된 장치가 없습니다.", Toast.LENGTH_LONG).show();
-            finish(); // App 종료.
+            finish();
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -106,10 +109,16 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
             listItems.add(device.getName());
         }
 
-        listItems.add("취소");  // 취소 항목 추가.
+        builder.setPositiveButton("취소", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Log.i("Dialog", "취소");
+                Toast.makeText(getApplicationContext(), "취소", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
 
         // GGG : 블루투스 페어링 버튼 추가
-        builder.setNegativeButton("dogfriend가 보이지 않을 경우 click", new DialogInterface.OnClickListener(){
+        builder.setNeutralButton("dogfriend가 보이지 않을 경우 click", new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int whichButton){
                 bluetoothSherchView();
             }
@@ -122,12 +131,11 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                // TODO Auto-generated method stub
                 if(item == mPairedDeviceCount) { // 연결할 장치를 선택하지 않고 '취소' 를 누른 경우.
                     Toast.makeText(getApplicationContext(), "취소하셨습니다.", Toast.LENGTH_LONG).show();
                     finish();
                 }
-                else { // 연결할 장치를 선택한 경우, 선체ㅡm].toString());
+                else { // 연결할 장치를 선택한 경우;
                     connectToSelectedDevice(items[item].toString());
                 }
             }
@@ -139,14 +147,14 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
         alert.show();
     }
 
+    // 3-1 DOGFRIENDS가 페어링 안돼있다면 블루투스 기기 검색창으로 이동 안내 팝업
     void bluetoothSherchView(){
 
         AlertDialog.Builder oDialog = new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Light_Dialog);
 
-        oDialog.setMessage("DOGFRIENDS의 전원이 켜져 있나 확인해주세요. 켜져 있다면 블루투스 페어링이 되어있는지 확인해 주세요.");
         oDialog.setTitle("DOGFRIENDS가 페어링 되어 있지 않습다.");
-        oDialog.setPositiveButton("아니오", new DialogInterface.OnClickListener() {
-            @Override
+        oDialog.setMessage("DOGFRIENDS의 전원을 켜주시고 블루투스 검색을 해주세요.");
+        oDialog.setPositiveButton("취소", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 Log.i("Dialog", "취소");
                 Toast.makeText(getApplicationContext(), "취소", Toast.LENGTH_LONG).show();
@@ -155,14 +163,67 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
         });
         oDialog.setNeutralButton("블루투스 검색", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
+                Log.i("Dialog", "블루투스 검색");
                 Intent intentSearch = new Intent(ConnectActivity.this, SearchBTActivity.class);
                 startActivity(intentSearch);
             }
         });
-        oDialog.setCancelable(false);
-        oDialog.show();// 백버튼으로 팝업창이 닫히지 않도록 한다.
+        oDialog.setCancelable(false);   // 뒤로가기 금지
+        oDialog.show();
     }
 
+    // 3-2 페어링 된 도그프렌즈 선택시 블루투스 연결
+    void connectToSelectedDevice(String selectedDeviceName) {
+        mRemoteDevice = getDeviceFromBondedList(selectedDeviceName);                                //getDeviceFromBondedList : 페어링된 블루투스 목록 가져옴
+        final UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
+
+
+        try {
+            mSocket = mRemoteDevice.createRfcommSocketToServiceRecord(uuid);
+            mSocket.connect(); // 소켓이 생성 되면 connect() 함수를 호출함으로써 두기기의 연결은 완료된다.
+
+            mOutputStream = mSocket.getOutputStream();
+            mInputStream = mSocket.getInputStream();
+
+            Toast.makeText(getApplicationContext(), "블투스가 연결 되었습니다", Toast.LENGTH_LONG).show();         //EEEE
+
+            beginListenForData();
+
+        }catch(Exception e) { // 블루투스 연결 중 오류 발생
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("ERROR!!!");
+            builder.setMessage(e.getMessage());
+            builder.setPositiveButton("닫기", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    Toast.makeText(getApplicationContext(), "닫기", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+
+            //Toast.makeText(getApplicationContext(), e.getMessage() + "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
+            //finish();  // App 종료
+        }
+    }
+
+    //
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        switch(requestCode) {
+            case REQUEST_ENABLE_BT:
+                if(resultCode == RESULT_OK) { // 블루투스 활성화 상태
+                    selectDevice();
+                }
+                else if(resultCode == RESULT_CANCELED) { // 블루투스 비활성화 상태 (종료)
+                    Toast.makeText(getApplicationContext(), "블루투수를 사용할 수 없어 프로그램을 종료합니다", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     //----------------------------- 데이터 송수신 ----------------------------------
     // 데이터 수신(쓰레드 사용 수신된 메시지를 계속 검사함)
@@ -241,59 +302,10 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
         return selectedDevice;
     }
 
-    @Override
-    protected void onDestroy() {
-        try{
-            mWorkerThread.interrupt(); // 데이터 수신 쓰레드 종료
-            mInputStream.close();
-            mOutputStream.close();
-            mSocket.close();
-        }catch(Exception e){}
-        super.onDestroy();
-    }
 
-    void connectToSelectedDevice(String selectedDeviceName) {
-        mRemoteDevice = getDeviceFromBondedList(selectedDeviceName);
-        UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
 
-        try {
-            mSocket = mRemoteDevice.createRfcommSocketToServiceRecord(uuid);
-            mSocket.connect(); // 소켓이 생성 되면 connect() 함수를 호출함으로써 두기기의 연결은 완료된다.
 
-            mOutputStream = mSocket.getOutputStream();
-            mInputStream = mSocket.getInputStream();
 
-            Toast.makeText(getApplicationContext(), "블투스가 연결 되었습니다", Toast.LENGTH_LONG).show();         //EEEE
-
-            beginListenForData();
-
-        }catch(Exception e) { // 블루투스 연결 중 오류 발생
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("ERROR!!!");
-            builder.setMessage(e.getMessage());
-            builder.setPositiveButton("OK", null);
-            builder.setNegativeButton("Cancel", null);
-            AlertDialog alert = builder.create();
-            alert.show();
-
-            //Toast.makeText(getApplicationContext(), e.getMessage() + "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
-            //finish();  // App 종료
-        }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(layout.activity_connect);
-
-        mEditReceive = (EditText)findViewById(id.receiveText);
-        mEditSend = (EditText)findViewById(id.sendText);
-
-        Button button = (Button)findViewById(id.sendButton);
-        button.setOnClickListener(this);
-
-        checkBluetooth();
-    }
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu){
@@ -316,6 +328,17 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v){
         sendData(mEditSend.getText().toString());
         mEditSend.setText("");
+    }
+
+    @Override
+    protected void onDestroy() {
+        try{
+            mWorkerThread.interrupt(); // 데이터 수신 쓰레드 종료
+            mInputStream.close();
+            mOutputStream.close();
+            mSocket.close();
+        }catch(Exception e){}
+        super.onDestroy();
     }
 
 }
