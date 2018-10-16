@@ -1,32 +1,33 @@
 package com.example.test;
 
-        import java.io.InputStream;
-        import java.io.OutputStream;
-        import java.util.ArrayList;
-        import java.util.List;
-        import java.util.Set;
-        import java.util.UUID;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
-        import android.app.AlertDialog;
-        import android.bluetooth.BluetoothAdapter;
-        import android.bluetooth.BluetoothDevice;
-        import android.bluetooth.BluetoothSocket;
-        import android.content.DialogInterface;
-        import android.content.Intent;
-        import android.os.Bundle;
-        import android.os.Handler;
+import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.icu.text.BreakIterator;
+import android.os.Bundle;
+import android.os.Handler;
 
-        import android.support.v7.app.AppCompatActivity;
-        import android.util.Log;
-        import android.view.Menu;
-        import android.view.MenuItem;
-        import android.view.View;
-        import android.widget.Button;
-        import android.widget.EditText;
-        import android.widget.ListView;
-        import android.widget.Toast;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
 
-        import com.example.test.R.*;
+import com.example.test.R.*;
 
 public class ConnectActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -44,38 +45,40 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
     String mStrDelimiter = "\n";
     char mCharDelimiter =  '\n';
 
-    List<String> serchListItems;
-
     Thread mWorkerThread = null;
     byte[] readBuffer;
     int readBufferPosition;
 
-    EditText mEditReceive, mEditSend;
-    Button mButtonSend;
+    EditText ssidInput, passInput;
+    Button btn_ok;
+
+    private Intent intentSearch;
 
 
-    // 1
+    // 1 모든 인스턴스 초기화
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.activity_connect);
 
 
-        mEditReceive = (EditText)findViewById(id.receiveText);
-        mEditSend = (EditText)findViewById(id.sendText);
+        ssidInput = (EditText)findViewById(id.ssidInput);
+        passInput = (EditText)findViewById(id.passInput);
 
-        mButtonSend = (Button)findViewById(id.sendButton);
-        mButtonSend.setOnClickListener(this);
+        btn_ok = (Button)findViewById(id.btn_ok);
+        btn_ok.setOnClickListener(this);
+
+        intentSearch = new Intent(ConnectActivity.this, SearchBTActivity.class);
 
         checkBluetooth();
     }
 
-    // 2
+    // 2 블루투스 연결이 가능한 상태인지 체크
     void checkBluetooth() {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if(mBluetoothAdapter == null ) {  // 블루투스 미지원
             Toast.makeText(getApplicationContext(), "기기가 블루투스를 지원하지 않습니다.", Toast.LENGTH_LONG).show();
-            finish();  // 앱종료
+            finish();  // 현재액티비티 종료
         }
         else { // 블루투스 지원
 
@@ -90,7 +93,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    // 3
+    // 3 페어링 된 블루투스 장치목록 보기 및 선택
     void selectDevice() {
 
         mDevices = mBluetoothAdapter.getBondedDevices();
@@ -98,9 +101,8 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
 
         if(mPairedDeviceCount == 0 ) { // 페어링된 장치가 없는 경우.
             Toast.makeText(getApplicationContext(), "페어링된 장치가 없습니다.", Toast.LENGTH_LONG).show();
-            finish();
+            startActivity(intentSearch);                // 블루투스 기기 검색 액티비티로 이동
         }
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("블루투스 장치 선택");
 
@@ -123,6 +125,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
                 bluetoothSherchView();
             }
         });
+
 
         final CharSequence[] items = listItems.toArray(new CharSequence[listItems.size()]);
         listItems.toArray(new CharSequence[listItems.size()]);
@@ -147,13 +150,13 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
         alert.show();
     }
 
-    // 3-1 DOGFRIENDS가 페어링 안돼있다면 블루투스 기기 검색창으로 이동 안내 팝업
+    // 3-1 DOGFRIENDS가 페어링 안돼있다면 블루투스 기기 검색창으로 이동 안내 AlertDialog
     void bluetoothSherchView(){
 
         AlertDialog.Builder oDialog = new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Light_Dialog);
 
         oDialog.setTitle("DOGFRIENDS가 페어링 되어 있지 않습다.");
-        oDialog.setMessage("DOGFRIENDS의 전원을 켜주시고 블루투스 검색을 해주세요.");
+        oDialog.setMessage("DOGFRIENDS의 전원을 켜고 블루투스 검색을 해주세요.");
         oDialog.setPositiveButton("취소", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 Log.i("Dialog", "취소");
@@ -164,7 +167,6 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
         oDialog.setNeutralButton("블루투스 검색", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 Log.i("Dialog", "블루투스 검색");
-                Intent intentSearch = new Intent(ConnectActivity.this, SearchBTActivity.class);
                 startActivity(intentSearch);
             }
         });
@@ -174,8 +176,8 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
 
     // 3-2 페어링 된 도그프렌즈 선택시 블루투스 연결
     void connectToSelectedDevice(String selectedDeviceName) {
-        mRemoteDevice = getDeviceFromBondedList(selectedDeviceName);                                //getDeviceFromBondedList : 페어링된 블루투스 목록 가져옴
-        final UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
+        mRemoteDevice = getDeviceFromBondedList(selectedDeviceName);                                // getDeviceFromBondedList : 페어링된 블루투스 목록 가져옴
+        final UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");              // UUID는 디바이스를 구별할 수 있는 식별자(ID) 현재 블투 UUID 사용
 
 
         try {
@@ -233,6 +235,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
         readBufferPosition = 0;                 // 버퍼 내 수신 문자 저장 위치.
         readBuffer = new byte[1024];            // 수신 버퍼.
 
+        // 문자열 수신 쓰레드
         mWorkerThread = new Thread(new Runnable()
         {
             @Override
@@ -254,10 +257,17 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
                                     readBufferPosition = 0;
 
                                     handler.post(new Runnable(){
-
                                         @Override
                                         public void run() {
-                                            mEditReceive.setText(mEditReceive.getText().toString() + data+ mStrDelimiter);
+                                            if(data.equals("FAIL")){
+                                                Toast.makeText(ConnectActivity.this, "연결실패! 다시 확인해주세요", Toast.LENGTH_SHORT).show();
+                                            } else{
+                                                Toast.makeText(ConnectActivity.this, "와이파이가 연결되었습니다.", Toast.LENGTH_SHORT).show();
+//                                                mEditReceive.setText(mEditReceive.getText().toString() + data+ mStrDelimiter);
+//                                                MyApplication app = (MyApplication)getApplication();
+//                                                app.setData(data);
+                                                finish();
+                                            }
                                         }
 
                                     });
@@ -326,8 +336,11 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v){
-        sendData(mEditSend.getText().toString());
-        mEditSend.setText("");
+        Toast.makeText(ConnectActivity.this, "연결성공이 될 때까지 끄지 말아주세요", Toast.LENGTH_SHORT).show();
+        sendData(ssidInput.getText().toString());
+        sendData(passInput.getText().toString());
+//        ssidInput.setText("");
+//        passInput.setText("");
     }
 
     @Override
