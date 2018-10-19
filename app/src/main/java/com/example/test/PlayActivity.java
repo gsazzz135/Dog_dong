@@ -9,42 +9,35 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.test.model.Controll;
+import com.example.test.model.Power;
 import com.example.test.model.TempHumi;
 
-import java.io.IOException;
-import java.util.ResourceBundle;
-
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
-import retrofit2.http.Body;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Path;
+import retrofit2.http.Query;
 
+import static com.example.test.BuildConfig.DEBUG;
 
 public class PlayActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView temp;
     private TextView humi;
+    private TextView state;
 
     private Button btn_refresh;
 
     private Switch btn_power;
 
-    Retrofit retrofit;
-
-    String statePower;
-
     public static String SERVER_ADRESS = "http://www.dogfriends.site/";
+
+    private static Retrofit retrofit = null;
+    ApiService apiService;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,12 +46,22 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
         temp = findViewById(R.id.temp_result);
         humi = findViewById(R.id.humi_result);
+        state = findViewById(R.id.state_auto);
 
         findViewById(R.id.btn_refresh).setOnClickListener(this);
 
         btn_power = findViewById(R.id.btn_power);
         btn_power.setOnClickListener(this);
+
+        //retrofit 생성 (url주소 빌드 한다
+        retrofit = new Retrofit.Builder()
+                .baseUrl(SERVER_ADRESS)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        apiService = retrofit.create(ApiService.class);
     }
+
 
     @Override
     public void onClick(View view) {
@@ -73,73 +76,88 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
            case R.id.btn_power:
-               checkPower();
+               sendPower();
                break;
         }
     }
 
-    private  void checkPower(){
 
-        statePower = String.valueOf(btn_power.isChecked());
+/////////////////////////////////////// 서비스 인터페이스 //////////////////////////////////////
 
-        if(btn_power.isChecked()){
-            Toast.makeText(PlayActivity.this, "DOGFRIENDS를 시작합니다", Toast.LENGTH_SHORT).show();
+    public interface ApiService {
 
-        } else {
-            Toast.makeText(PlayActivity.this, "DOGFRIENDS를 종료합니다", Toast.LENGTH_SHORT).show();
+        @GET("view")
+        Call<TempHumi> getTempHumi();
 
-        }
+        @GET("android/setpower/")
+        Call<Power> getComment(@Query("power") int power);
 
     }
 
-    private void setControll(){
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(SERVER_ADRESS)
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+/////////////////////////////////////////// 자동제어 ///////////////////////////////////////////
+    public void sendPower(){
 
-        ControllService controllService = retrofit.create(ControllService.class);
-        String json = "";
+        int statePower = 0;
 
-        if(statePower == "true") {
-            json = "{ " + statePower + "on" + " }";
-        } else {
-            json = "{ " + statePower + "off" + " }";
-        }
+        if(btn_power.isChecked()){ // 전원켜짐
 
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), json);
+            statePower = 1;
+            Call<Power> comment = apiService.getComment(statePower); // Call<ResponseBody> comment = apiService.getComment(1);
 
-        controllService.postPower(requestBody).enqueue(new Callback<Controll>(){
-            @Override
-            public void  onResponse(Call<Controll> call, Response<Controll> response){
-                try {
-                    Log.d("RetrofitTest", response.body().toString());
-                } catch (IOException e){
-                    e.printStackTrace();
+            comment.enqueue(new Callback<Power>() {
+
+                @Override
+                public void onResponse(Call<Power> call, Response<Power> response) {
+                    if(response.isSuccessful()) {
+//                        Power power = response.body();
+//                        state.setText(String.valueOf(power.getPower()));
+                        state.setText("ON");
+                    }
+                    if ( DEBUG ) Log.v ( "TAG", "시작 isSuccessful" );
                 }
-            }
-            @Override
-            public  void onFailure(Call<Controll> call, Throwable t){
 
-            }
+                @Override
+                public void onFailure(Call<Power> call, Throwable t) {
+                    if ( DEBUG ) Log.w ( "TAG", "시작 실패" );
+                }
+            });
 
-        });
+            Toast.makeText(PlayActivity.this, "시작합니다", Toast.LENGTH_SHORT).show();
 
+        } else {    // 전원 꺼짐
+
+            statePower = 0;
+            Call<Power> comment = apiService.getComment(statePower);    // Call<ResponseBody> comment = apiService.getComment(0);
+
+            comment.enqueue(new Callback<Power>() {
+
+                @Override
+                public void onResponse(Call<Power> call, Response<Power> response) {
+                    if(response.isSuccessful()) {
+//                        Power power = response.body();
+//                        state.setText(String.valueOf(power.getPower()));
+                        state.setText("OFF");
+
+                    }
+                    if ( DEBUG ) Log.v ( "TAG", "종료 isSuccessful" );
+                }
+
+                @Override
+                public void onFailure(Call<Power> call, Throwable t) {
+                    if ( DEBUG ) Log.w ( "TAG", "종료 실패" );
+                }
+            });
+
+            Toast.makeText(PlayActivity.this, "종료합니다", Toast.LENGTH_SHORT).show();
+
+        }
     }
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
+////////////////////////////////////////////// 온습도 ///////////////////////////////////////////////
     private void getTempHumi() {
-        /*함수로 뺄 예정*/
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(SERVER_ADRESS)
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
-        TempHumiService tempHumiService = retrofit.create(TempHumiService.class);
-        tempHumiService.getTempHumi().enqueue(new Callback<TempHumi>() {
+        apiService.getTempHumi().enqueue(new Callback<TempHumi>() {           //enqueue() : 비동기적으로 요청을 보내고 응답이 다시 올 때 콜백으로 앱에 알림(빽그라운드스레드에서 실행 처리)
             @Override
             public void onResponse(Call<TempHumi> call, Response<TempHumi> response) {
                 if(response.isSuccessful()) {
@@ -156,19 +174,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
     }
-    public interface TempHumiService {
-        @GET("view")
-        Call<TempHumi> getTempHumi();
-    }
 
-    public interface ControllService{
-        @GET("ctrl/{state}")
-        Call<Controll> getPower();
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
-        @FormUrlEncoded
-        @POST("ctrl/{state}")
-        Call<Controll> postPower(@Body RequestBody requestBody);
-    }
 
 }
 

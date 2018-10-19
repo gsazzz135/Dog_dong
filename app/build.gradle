@@ -32,8 +32,13 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:28.0.0-rc02'
 
     //retrofit2
-    api 'com.google.code.gson:gson:2.7'
-    api 'com.squareup.retrofit2:converter-scalars:2.3.0'  // String 처리시
     api 'com.squareup.retrofit2:retrofit:2.1.0'
-    api 'com.squareup.retrofit2:converter-gson:2.1.0'
+    api 'com.squareup.retrofit2:converter-scalars:2.3.0'  // String 처리시
+
+    //JSON
+    api 'com.google.code.gson:gson:2.7'     //JSON을 POJO로 변환
+    api 'com.squareup.retrofit2:converter-gson:2.1.0'   //Retrofit의 GSON통합
+
+    api 'com.squareup.okhttp3:okhttp:3.9.1'
+    api 'com.squareup.okhttp3:logging-interceptor:3.9.1'
 }
