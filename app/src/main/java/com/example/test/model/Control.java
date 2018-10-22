@@ -1,28 +1,21 @@
 package com.example.test.model;
 
-public class Power {
+public class Control {
 
     int power;
-    int manual;
 
-    public Power(int Power) {
-        this.power = Power;
-        this.manual = manual;
+    public Control(int control) {
+        this.power = control;
     }
 
     public int getPower() {
         return power;
     }
 
-    public int getManual() {
-        return manual;
-    }
-
     @Override
     public String toString() {
-        return "Power{" +
+        return "Control{" +
                 "power=" + power +
                 '}';
     }
 }
-
